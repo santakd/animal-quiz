@@ -1,9 +1,14 @@
+### Animal Quiz
+
 The HTML file implements a simple, interactive animal quiz game using vanilla JavaScript, CSS, and HTML. 
 It displays a series of animal images (stored in an img/ folder) and asks users to select the correct name from four multiple-choice options. 
 The game adapts dynamically to the number of available animals and questions configured, providing feedback and a final score. 
 At a high level, it follows web development principles like separation of concerns (HTML for structure, CSS for styling, JS for behavior), 
 responsive design for mobile compatibility, and event-driven programming to handle user interactions.
-
+   
+![animal-quiz.gif](https://github.com/santakd/animal-quiz/blob/main/animal-quiz.gif)
+   
+   
 The HTML structure defines three main screens: a start screen with an introduction and start button, a quiz screen showing the current question with
 an image and choice buttons, and a results screen displaying the score and feedback. Elements are organized in a centered container with IDs for easy
 JavaScript access. The <script> tag contains all the game logic, making it self-contained without external dependencies. This approach keeps the code 
