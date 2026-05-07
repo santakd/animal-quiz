@@ -6,6 +6,31 @@ Animal Quiz - Array Generator Utility
 Scans a target directory for image files, strips a specified suffix and extension,
 and generates a formatted JavaScript array in a text file.
 Writes timestamped execution logs to a local /logs directory.
+
+How to use this script
+
+    Prerequisites: Ensure you have Python 3.6+ installed.
+
+    Save the file: Save the code above as array_gen.py in the exact same main folder where your index.html and img folder live.
+
+    Run the program:
+    Open your terminal (or Command Prompt) and run:
+
+    python array_gen.py
+
+    (If your folder is located somewhere else, you can pass the path directly like this: python array_gen.py /path/to/my/custom/img_folder)
+
+What it does automatically:
+
+    Creates a /logs folder if it doesn't exist.
+
+    Writes a timestamped .log file (e.g., array_gen_20231024_153022.log) capturing all debug and info events.
+
+    Scans your img folder, ignores any files that aren't .gif, and elegantly cuts off the " 512" suffix.
+
+    Alphabetizes your animals.
+
+    Generates an array_gen.txt file containing the exactly formatted, copy-paste-ready string for your HTML file:
 """
 
 import os                       # For directory scanning and file handling
