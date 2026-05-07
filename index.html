@@ -192,30 +192,35 @@
         const FOLDER_PATH = "img/";
 
         // ⚠️ EDIT THIS ARRAY: PLEASE REFER ARRAY_GEN.PY TO GENERATE THE CORRECT NAMES IN ARRAY_GEN.TXT BASED ON YOUR IMAGE FILES 
-        // Add the exact names of the animals as they appear in your filenames (without " 512.gif")
-        // For example, if you have "img/Cat 512.gif", you should add "Cat" to this array. 
+        // Add the encrypted strings for the animals as they appear in your filenames (without " 512.gif")
+        // For example, if you have "img/Cat 512.gif", you should add encrypted string for "Cat" to this array. 
         // Make sure to have at least 4 animals in this list for the quiz to work properly, as each question requires one correct answer and three wrong answers.
         // This array is crucial for the quiz to function, as it determines which animals will be included in the quiz questions. 
         // The quiz will randomly select from this list to create questions. You can have as many animals as you want, but remember to update the 'QUESTIONS_PER_GAME' setting if you want to ask about all of them in each session.
         // Example: If you have 15 animals in this list and set QUESTIONS_PER_GAME to 10, each quiz session will randomly select 10 out of those 15 animals to ask about, adding variety to each playthrough.
         // If you want to ask about all animals every time, simply set QUESTIONS_PER_GAME to a number larger than the length of this array (e.g., 100), and the quiz will automatically limit it to the number of animals you have.
         // Note: The names in this array should match the filenames of your images (without the " 512.gif" part). 
-        // For example, if you have an image named "img/Lion 512.gif", you should include "Lion" in this array.
+        // For example, if you have an image named "img/Lion 512.gif", you should include encrypted string for "Lion" in this array.
         // This array is crucial for the quiz to function, as it determines which animals will be included in the quiz questions. 
         // Make sure to keep it updated with the correct animal names that correspond to your image files.
         // The quiz will randomly select from this list to create questions. You can have as many animals as you want, but remember to update the 'QUESTIONS_PER_GAME' setting if you want to ask about all of them in each session.
-        // In summary, this array should contain the names of all the animals you want to include in your quiz, and it should match the filenames of your images (without the " 512.gif" suffix). 
-        // The quiz will use this list to generate questions and options for the players. 
 
-        const animalNames = [
-            "Ant", "Bat", "Bee", "Bird", "Butterfly", "Chick", "Cockroach", "Crab",
-            "Cricket", "Crocodile", "Dinosaur", "Dog", "Dolphin", "Dove", "Eagle", "Fish",
-            "Flamingo", "Fly", "Goat", "Goose", "Gorilla", "Hedgehog", "Horse", "Jellyfish",
-            "Kangaroo", "Ladybug", "Lobster", "Monkey", "Mosquito", "Octopus", "Orangutan", "Orca",
-            "Otter", "Owl", "Ox", "Peacock", "Penguin", "Phoenix", "Pig", "Rabbit",
-            "Raccoon", "Rat", "Rooster", "Scorpion", "Seal", "Shark", "Snail", "Snake",
-            "Spider", "Squirrel", "Tiger", "Turtle", "Whale"
+        // [ENCRYPTION NOTE] 
+        // The names below are Base64 encrypted/obfuscated so players cannot cheat by looking at the page source code.
+        // If you need to add a new animal manually, you can open your browser console (F12) and type: btoa("YourAnimalName")
+        // Paste the generated string inside the array below.
+        const encryptedAnimalNames = [
+            "QW50", "QmF0", "QmVl", "QmlyZA==", "QnV0dGVyZmx5", "Q2hpY2s=", "Q29ja3JvYWNo", "Q3JhYg==",
+            "Q3JpY2tldA==", "Q3JvY29kaWxl", "RGlub3NhdXI=", "RG9n", "RG9scGhpbg==", "RG92ZQ==", "RWFnbGU=", "RmlzaA==",
+            "RmxhbWluZ28=", "Rmx5", "R29hdA==", "R29vc2U=", "R29yaWxsYQ==", "SGVkZ2Vob2c=", "SG9yc2U=", "SmVsbHlmaXNo",
+            "S2FuZ2Fyb28=", "TGFkeWJ1Zw==", "TG9ic3Rlcg==", "TW9ua2V5", "TW9zcXVpdG8=", "T2N0b3B1cw==", "T3Jhbmd1dGFu", "T3JjYQ==",
+            "T3R0ZXI=", "T3ds", "T3g=", "UGVhY29jaw==", "UGVuZ3Vpbg==", "UGhvZW5peA==", "UGln", "UmFiYml0",
+            "UmFjY29vbg==", "UmF0", "Um9vc3Rlcg==", "U2NvcnBpb24=", "U2VhbA==", "U2hhcms=", "U25haWw=", "U25ha2U=",
+            "U3BpZGVy", "U3F1aXJyZWw=", "VGlnZXI=", "VHVydGxl", "V2hhbGU="
         ];
+
+        // Decrypt the array silently at runtime so the game logic can use the normal names
+        const animalNames = encryptedAnimalNames.map(name => atob(name));
 
         // ==========================================
         // APPLICATION STATE
@@ -256,11 +261,6 @@
         // It works by iterating through the array from the last element to the first, and for each element, it generates a random index from the remaining unshuffled portion of the array. 
         // Then it swaps the current element with the element at the random index.
         // This ensures that each element has an equal probability of ending up in any position in the shuffled array.
-        // Example usage: If you have an array ['A', 'B', 'C', 'D'] and you call shuffleArray on it, you might get a new array like ['C', 'A', 'D', 'B']. 
-        // Each time you call it, the order will likely be different.
-        // Note: This function does not modify the original array; it creates a copy of it and shuffles the copy, which is a good practice to avoid side effects.
-        // In the context of this quiz app, we use this function to shuffle the order of the answer choices for each question, as well as to randomly select which animals will be included in the quiz questions.
-        // In summary, the shuffleArray function is a crucial utility for adding randomness to the quiz experience, making it more engaging and less predictable for players.  
 
         function shuffleArray(array) {
             const arr = [...array];
