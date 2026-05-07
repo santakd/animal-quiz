@@ -192,10 +192,11 @@
         const FILE_SUFFIX = " 512.gif";
         const FOLDER_PATH = "img/";
 
-        // ⚠️ EDIT THIS ARRAY:
+        // ⚠️ EDIT THIS ARRAY: PLEASE REFER ARRAY_GEN.PY TO GENERATE THE CORRECT NAMES IN ARRAY_GEN.TXT BASED ON YOUR IMAGE FILES 
         // Add the exact names of the animals as they appear in your filenames (without " 512.gif")
-        // For example, if you have "img/Cat 512.gif", you should add "Cat" to this array.
-        // Make sure to have at least 4 animals in this list for the quiz to work properly.
+        // For example, if you have "img/Cat 512.gif", you should add "Cat" to this array. 
+        // Make sure to have at least 4 animals in this list for the quiz to work properly, as each question requires one correct answer and three wrong answers.
+        // This array is crucial for the quiz to function, as it determines which animals will be included in the quiz questions. 
         // The quiz will randomly select from this list to create questions. You can have as many animals as you want, but remember to update the 'QUESTIONS_PER_GAME' setting if you want to ask about all of them in each session.
         // Example: If you have 15 animals in this list and set QUESTIONS_PER_GAME to 10, each quiz session will randomly select 10 out of those 15 animals to ask about, adding variety to each playthrough.
         // If you want to ask about all animals every time, simply set QUESTIONS_PER_GAME to a number larger than the length of this array (e.g., 100), and the quiz will automatically limit it to the number of animals you have.
@@ -205,7 +206,7 @@
         // Make sure to keep it updated with the correct animal names that correspond to your image files.
         // The quiz will randomly select from this list to create questions. You can have as many animals as you want, but remember to update the 'QUESTIONS_PER_GAME' setting if you want to ask about all of them in each session.
         // In summary, this array should contain the names of all the animals you want to include in your quiz, and it should match the filenames of your images (without the " 512.gif" suffix). 
-        // The quiz will use this list to generate questions and options for the players.
+        // The quiz will use this list to generate questions and options for the players. 
 
         const animalNames = [
             "Ant", "Bat", "Bee", "Bird", "Butterfly", "Chick", "Cockroach", "Crab",
