@@ -187,7 +187,6 @@
         // If you want to ask all animals every time, simply set this to a number larger than your total animals (e.g., 100).
         // The quiz will automatically limit it to the number of animals you have if you set it too high.
         // In summary, this setting allows you to control how many questions are asked in each quiz session, and the quiz will adapt accordingly based on the number of animals you have in your list.
-        // The quiz will randomly select from the 'animalNames' list to create questions, so you can have a large pool of animals and only ask about a subset each time for more replayability.
         const QUESTIONS_PER_GAME = 10; 
         const FILE_SUFFIX = " 512.gif";
         const FOLDER_PATH = "img/";
@@ -315,20 +314,18 @@
         function generateQuestions(totalQuestions) {
             // Shuffle all animals to pick the random correct ones
             // We take a shuffled copy of the animalNames array and slice it to get the number of questions we want to ask. This ensures that we get a random selection of animals for each quiz session.
-            // For each selected correct animal, we then create a question object that includes the correct answer, three random wrong answers, and the path to the image. The wrong answers are also randomly selected from the remaining animals to ensure variety.
             const shuffledPool = shuffleArray(animalNames);
             const selectedCorrectAnimals = shuffledPool.slice(0, totalQuestions);
 
             quizQuestions = selectedCorrectAnimals.map(correctAnimal => {
                 // Get 3 random wrong answers
                 // We create a pool of wrong answers by filtering out the correct animal from the original list. Then we shuffle this pool and take the first three to use as wrong options for the quiz question.
-                // This ensures that the wrong answers are different for each question and adds to the challenge of the quiz. The correct answer is then combined with these wrong answers, and the order of all options is shuffled to prevent any patterns that players might guess.
                 const wrongPool = animalNames.filter(animal => animal !== correctAnimal);
                 const wrongAnimals = shuffleArray(wrongPool).slice(0, 3);
                 
                 // Combine correct and wrong, then shuffle the options
-                // We create the final choices array by combining the correct answer with the three wrong answers. Then we shuffle this array to randomize the order in which the options are presented to the player. This is important to ensure that the correct answer does not always appear in the same position, which would make the quiz too predictable.
-                // The resulting question object includes the correct answer, the shuffled choices, and the path to the image that will be displayed for that question. This structured format makes it easy to load each question into the UI and handle user interactions when they select an answer.
+                // We create the final choices array by combining the correct answer with the three wrong answers. Then we shuffle this array to randomize the order in which the options are presented to the player. 
+                // This is important to ensure that the correct answer does not always appear in the same position, which would make the quiz too predictable.
                 const choices = shuffleArray([correctAnimal, ...wrongAnimals]);
 
                 return {
@@ -393,10 +390,8 @@
             els.score.innerText = score;
             
             const percentage = score / quizQuestions.length;
-            // Provide feedback based on the player's performance
             // This feedback system gives players a sense of achievement and encourages them to improve. 
             // It uses simple thresholds to determine the message that will be displayed based on the percentage of correct answers. 
-            // For example, if a player gets all questions right, they receive a "Perfect score!" message, while lower scores receive encouraging messages to motivate them to try again.
             if (percentage === 1) els.feedback.innerText = "Perfect score! You are an animal expert! 🏆";
             else if (percentage >= 0.7) els.feedback.innerText = "Great job! You really know your animals! 🌟";
             else if (percentage >= 0.5) els.feedback.innerText = "Not bad! But there's room for improvement. 👍";
