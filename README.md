@@ -44,9 +44,11 @@ const QUESTIONS_PER_GAME = 20;
 ```
 
 #### 2. Adding Custom Animals
-Modern web browsers have strict security rules that prevent local JavaScript from reading your hard drive to see what files are in your `img` folder. Therefore, you must tell the script what animals are available.
+Modern web browsers have strict security rules that prevent local JavaScript from reading your hard drive to see what files are in your `img` folder. 
+Therefore, you must tell the script what animals are available.
 
 Simply add the exact names of your animals to the `animalNames` array. **Do not include the " 512.gif" part.**
+Refer the array_gen.py utility to generate the array from the files in img folder
 
 ```javascript
 const animalNames = [
