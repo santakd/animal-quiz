@@ -48,7 +48,8 @@ Modern web browsers have strict security rules that prevent local JavaScript fro
 Therefore, you must tell the script what animals are available.
 
 Simply add the exact names of your animals to the `animalNames` array. **Do not include the " 512.gif" part.**
-Refer the array_gen.py utility to generate the array from the files in img folder
+
+Refer the `array_gen.py` utility to generate the array from the files in img folder
 
 ```javascript
 const animalNames = [
