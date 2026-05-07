@@ -4,53 +4,47 @@ array_gen.py v1.0.1
 Animal Quiz - Array Generator Utility 
 -------------------------------------
 Scans a target directory for image files, strips a specified suffix and extension,
-and generates a formatted JavaScript array in a text file called array_gen.txt. 
+and generates a formatted JavaScript array in a text file called array_txt.txt. 
 This utility is designed to help you easily maintain the list of animals for your quiz by simply managing your image files.
 Writes timestamped execution logs to a local /logs directory.
 
 How to use this script
-
     Prerequisites: Ensure you have Python 3.6+ installed.
-
-    Save the file: Save the code above as array_gen.py in the exact same main folder where your index.html and img folder live.
-
+    Save the file: Save the code above as array_txt.py in the exact same main folder where your index.html and img folder live.
     Run the program:
     Open your terminal (or Command Prompt) and run:
-
-    python array_gen.py
-
+    python array_txt.py
     (If your folder is located somewhere else, you can pass the path directly like this: python array_gen.py /path/to/my/custom/img_folder)
 
 What it does automatically:
-
     Creates a /logs folder if it doesn't exist.
-
     Writes a timestamped .log file (e.g., array_gen_20231024_153022.log) capturing all debug and info events.
-
     Scans your img folder, ignores any files that aren't .gif, and elegantly cuts off the " 512" suffix.
-
     Alphabetizes your animals.
-
-    Generates an array_gen.txt file containing the exactly formatted, copy-paste-ready string for your HTML file:
+    Generates an array_txt.txt file containing the exactly formatted, copy-paste-ready string for your HTML file:
 """
 
-import os                       # For directory scanning and file handling
-import sys                      # For exiting the program and handling command-line arguments
-import logging                  # For robust logging of the utility's execution
-import argparse                 # For parsing command-line arguments
-from pathlib import Path        # For modern and cross-platform path handling
-from datetime import datetime   # For timestamping log files
+import os                               # For directory scanning and file handling
+import sys                              # For exiting the program and handling command-line arguments
+import logging                          # For robust logging of the utility's execution
+import argparse                         # For parsing command-line arguments
+from pathlib import Path                # For modern and cross-platform path handling
+from datetime import datetime           # For timestamping log files
 
 # ==========================================
 # CONFIGURATION CONSTANTS
 # ==========================================
+# Constants for the program's name and version, used in logging and reference throughout the code
+PROGRAM_NAME = "Array Generator Util"   # Name of the utility for logging and reference
+PROGRAM_VERSION = "1.0.1"               # Version of the utility for logging and reference
+
 # Change these constants to match your exact file naming conventions
 FILE_EXTENSION = ".gif"
 FILE_SUFFIX = " 512"
 
 # Default paths
 DEFAULT_IMG_DIR = "img"
-OUTPUT_FILE_NAME = "array_gen.txt"
+OUTPUT_FILE_NAME = "array_txt.txt"
 LOG_DIR_NAME = "logs"
 
 # Output formatting
@@ -110,7 +104,7 @@ def format_javascript_array(animal_names: list) -> str:
 def main():
     # Setup Logger before any processing to capture all events, including errors
     logger = setup_logging()
-    logger.info("Starting Array Generator Utility.")
+    logger.info(f"Starting {PROGRAM_NAME} v{PROGRAM_VERSION}")
     
     # Setup Argument Parser with a clear description and default path
     parser = argparse.ArgumentParser(description="Scan an image directory and generate a JS array text file.")
