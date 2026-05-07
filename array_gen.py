@@ -4,7 +4,8 @@ array_gen.py v1.0.1
 Animal Quiz - Array Generator Utility 
 -------------------------------------
 Scans a target directory for image files, strips a specified suffix and extension,
-and generates a formatted JavaScript array in a text file.
+and generates a formatted JavaScript array in a text file called array_gen.txt. 
+This utility is designed to help you easily maintain the list of animals for your quiz by simply managing your image files.
 Writes timestamped execution logs to a local /logs directory.
 
 How to use this script
