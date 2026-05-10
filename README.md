@@ -6,7 +6,7 @@ A lightweight, fully responsive, zero-dependency trivia game built with pure HTM
 
 Designed with simplicity in mind, this project allows anyone to quickly set up an educational and interactive quiz. 
 
-It dynamically selects random animals, generates multiple-choice questions, and calculates your score—all straight from your local web browser.
+It dynamically selects random animals, generates multiple-choice questions, and calculates your score—all straight from your local favorite web browser.
 
 ![animal-quiz.gif](https://github.com/santakd/animal-quiz/blob/main/animal-quiz.gif)
 
