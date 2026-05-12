@@ -10,6 +10,9 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 
 ![animal-quiz.gif](https://github.com/santakd/animal-quiz/blob/main/animal-quiz.gif)
 
+ 
+---
+
 ### ✨ Features
 
 * 🚫 **100% Serverless:** Runs locally using the `file://` protocol. No Node.js, Python, or Apache servers required!
@@ -18,6 +21,7 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 * ⚙️ **Dynamic Scaling:** Want 10 questions? 20? 50? Just change one variable (`QUESTIONS_PER_GAME`). The game's UI and math will automatically adapt.
 * 🛡️ **Fail-Safe Logic:** If you request 20 questions but only have 15 animals configured, the game intelligently scales itself down to 15 to prevent crashing.
 * 🎨 **Instant Visual Feedback:** Smooth CSS animations and color-coded feedback (Green for correct, Red for incorrect with the correct answer highlighted).
+
 
 ---
 
@@ -30,6 +34,7 @@ Because this app doesn't require a server, installation takes less than a minute
 3. **Add your images:** Place your animal GIF files inside the `img` folder. 
    * *Important:* Files must be named in the format: `<Animal Name> 512.gif` (e.g., `Lion 512.gif`, `Red Panda 512.gif`).
 4. **Play:** Double-click `index.html` to open it in Chrome, Safari, Firefox, or Edge.
+
 
 ---
 
@@ -73,6 +78,7 @@ const FILE_SUFFIX = ".jpg";
 * **CSS3:** Uses native CSS variables (`:root`) for easy theming. You can change the primary colors globally in seconds.
 * **Vanilla JavaScript (ES6+):** Utilizes array mapping, filtering, arrow functions, and DOM manipulation without the bloat of external libraries like React or jQuery.
 
+
 ---
 
 ### 💻 Developer Notes
@@ -107,6 +113,7 @@ mismatches could cause broken images, as handled by the onerror attribute. For i
 using a framework like React for state management in more complex apps. Overall, this code demonstrates fundamental web concepts like DOM manipulation, 
 asynchronous delays with setTimeout, and conditional rendering via CSS classes, making it a great starting point for beginners learning interactive web development.
 
+
 ---
 
 ### 🤝 Contributing
@@ -120,12 +127,15 @@ Feel free to check [issues page](https://github.com/your-username/your-repo-name
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+
 ---
 
 ### 📝 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
+
 ---
 
 *If you like this project, please consider giving it a ⭐ on GitHub!*
+ 
