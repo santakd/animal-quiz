@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Quiz Show</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        h2 { margin-top: 0; }
+
+        p { color: var(--text-muted); line-height: 1.6; }
+
+        .progress {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 250px;
+            background-color: #f9fafb;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .btn-start, .btn-restart {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 16px;
+            margin-top: 1rem;
+        }
+
+        .correct { background-color: var(--success-color) !important; }
+        .incorrect { background-color: var(--error-color) !important; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .choices-grid { grid-template-columns: 1fr; }
+            .quiz-container { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1>Animal Quiz</h1>
+            <!-- The number of questions is now injected dynamically via JS -->
+            <p>Test your animal knowledge! You will be shown <span id="intro-total-q"></span> random animals. Select the correct name from the 4 choices.</p>
+            <button class="btn-start" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <!-- Total is injected dynamically -->
+            <div class="progress">Question <span id="current-q">1</span> of <span id="total-q"></span></div>
+            <div class="image-container">
+                <img id="animal-image" src="" alt="Guess the animal" onerror="this.onerror=null; this.alt='Image not found! Please check your img folder.';">
+            </div>
+            <div class="choices-grid" id="choices-container">
+                <!-- Buttons injected via JS -->
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <h1>Quiz Complete!</h1>
+            <p>You scored</p>
+            <!-- Total is injected dynamically -->
+            <h2 style="font-size: 3rem; color: var(--primary-color); margin: 10px 0;"><span id="score">0</span> / <span id="final-total"></span></h2>
+            <p id="feedback-message"></p>
+            <button class="btn-restart" onclick="initApp()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        
+        // ⚠️ Make sure to update the 'animalNames' array accordingly if you change this number. The entire UI and game logic will adapt automatically.
+
+        const QUESTIONS_PER_GAME = 10; 
+        const FILE_SUFFIX = " 512.gif";
+        const FOLDER_PATH = "img/";
+
+        // ⚠️ EDIT THIS ARRAY: PLEASE REFER ARRAY_GEN.PY TO GENERATE THE CORRECT NAMES IN ARRAY_GEN.TXT BASED ON YOUR IMAGE FILES 
+
+        const encryptedAnimalNames = [
+            "QW50", "QmF0", "QmVhcg==", "QmVl", "QmlyZA==", "QnV0dGVyZmx5", "Q2hpY2s=", "Q29ja3JvYWNo",
+            "Q293", "Q3JhYg==", "Q3JpY2tldA==", "Q3JvY29kaWxl", "RGlub3NhdXI=", "RG9n", "RG9scGhpbg==", "RG92ZQ==",
+            "RHJhZ29u", "RWFnbGU=", "RmlzaA==", "RmxhbWluZ28=", "Rmx5", "Rm94", "RnJvZw==", "R29hdA==",
+            "R29vc2U=", "R29yaWxsYQ==", "SGVkZ2Vob2c=", "SG9yc2U=", "SmVsbHlmaXNo", "S2FuZ2Fyb28=", "TGFkeWJ1Zw==", "TGlvbg==",
+            "TG9ic3Rlcg==", "TW9ua2V5", "TW9zcXVpdG8=", "T2N0b3B1cw==", "T3Jhbmd1dGFu", "T3JjYQ==", "T3R0ZXI=", "T3ds",
+            "T3g=", "UGFuZGE=", "UGVhY29jaw==", "UGVuZ3Vpbg==", "UGhvZW5peA==", "UGln", "UmFiYml0", "UmFjY29vbg==",
+            "UmF0", "Um9vc3Rlcg==", "U2NvcnBpb24=", "U2VhbA==", "U2hhcms=", "U25haWw=", "U25ha2U=", "U3BpZGVy",
+            "U3F1aXJyZWw=", "VC1SZXg=", "VGlnZXI=", "VHVydGxl", "VW5pY29ybg==", "V2hhbGU=", "V29sZg=="
+        ];
+
+        // Decrypt the array silently at runtime so the game logic can use the normal names
+        const animalNames = encryptedAnimalNames.map(name => atob(name));
+
+        // ==========================================
+        // APPLICATION STATE
+        // ==========================================
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizQuestions = [];
+        let totalQuestionsToPlay = 0; // Will be calculated based on config and available images
+
+        // DOM Elements
+        // Caching DOM elements for better performance and cleaner code
+        // We store references to the different screens and important elements in the UI for easy access throughout the application. 
+
+        const screens = {
+            start: document.getElementById('start-screen'),
+            quiz: document.getElementById('quiz-screen'),
+            result: document.getElementById('result-screen')
+        };
+        // We also cache specific elements that we will need to update frequently, such as the question progress, image, choices container, score, and feedback message. 
+        // This way, we can easily update the UI without having to query the DOM multiple times, which improves performance and keeps our code organized.
+        const els = {
+            introTotal: document.getElementById('intro-total-q'),
+            currentQ: document.getElementById('current-q'),
+            totalQ: document.getElementById('total-q'),
+            image: document.getElementById('animal-image'),
+            choices: document.getElementById('choices-container'),
+            score: document.getElementById('score'),
+            finalTotal: document.getElementById('final-total'),
+            feedback: document.getElementById('feedback-message')
+        };
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+        
+        // Fisher-Yates Shuffle Algorithm
+        // This function takes an array and returns a new array with the elements shuffled in random order.
+        // It works by iterating through the array from the last element to the first, and for each element, it generates a random index from the remaining unshuffled portion of the array. 
+        // Then it swaps the current element with the element at the random index. This ensures that each element has an equal probability of ending up in any position in the shuffled array.
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Show a specific screen, hide others
+        function showScreen(screenName) {
+            Object.values(screens).forEach(screen => screen.classList.remove('active'));
+            screens[screenName].classList.add('active');
+        }
+
+        // ==========================================
+        // QUIZ LOGIC
+        // ==========================================
+
+        function initApp() {
+            if (animalNames.length < 4) {
+                alert("Error: You need at least 4 animals in the 'animalNames' list to play!");
+                return;
+            }
+
+            // Dynamically calculate how many questions will actually be asked.
+            // If QUESTIONS_PER_GAME is 20 but you only provided 15 animals, it limits it to 15.
+            totalQuestionsToPlay = Math.min(QUESTIONS_PER_GAME, animalNames.length);
+
+            // Update Start Screen Text dynamically. We update the introductory text on the start screen to reflect the actual number of questions that will be asked in the quiz. 
+            // This is important for setting the right expectations for players before they start the quiz.
+            els.introTotal.innerText = totalQuestionsToPlay;
+
+            showScreen('start');
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            // Update Quiz UI dynamically
+            els.totalQ.innerText = totalQuestionsToPlay;
+            els.finalTotal.innerText = totalQuestionsToPlay;
+
+            generateQuestions(totalQuestionsToPlay);
+            loadQuestion();
+            showScreen('quiz');
+        }
+
+        function generateQuestions(totalQuestions) {
+            // Shuffle all animals to pick the random correct ones
+            // We take a shuffled copy of the animalNames array and slice it to get the number of questions we want to ask. This ensures that we get a random selection of animals for each quiz session.
+            const shuffledPool = shuffleArray(animalNames);
+            const selectedCorrectAnimals = shuffledPool.slice(0, totalQuestions);
+
+            quizQuestions = selectedCorrectAnimals.map(correctAnimal => {
+                // Get 3 random wrong answers
+                // We create a pool of wrong answers by filtering out the correct animal from the original list. Then we shuffle this pool and take the first three to use as wrong options for the quiz question.
+                const wrongPool = animalNames.filter(animal => animal !== correctAnimal);
+                const wrongAnimals = shuffleArray(wrongPool).slice(0, 3);
+                
+                // We create the final choices array by combining the correct answer with the three wrong answers. Then we shuffle this array to randomize the order in which the options are presented to the player. 
+                // This is important to ensure that the correct answer does not always appear in the same position, which would make the quiz too predictable.
+                const choices = shuffleArray([correctAnimal, ...wrongAnimals]);
+
+                return {
+                    correct: correctAnimal,
+                    choices: choices,
+                    imagePath: `${FOLDER_PATH}${correctAnimal}${FILE_SUFFIX}`
+                };
+            });
+        }
+
+        function loadQuestion() {
+            const currentQ = quizQuestions[currentQuestionIndex];
+            
+            // Update UI with current question data
+            els.currentQ.innerText = currentQuestionIndex + 1;
+            els.image.src = currentQ.imagePath;
+            els.choices.innerHTML = '';
+
+            // Generate buttons for choices
+            currentQ.choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.innerText = choice;
+                btn.onclick = (e) => handleAnswer(choice, e.target);
+                els.choices.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(selectedChoice, buttonElement) {
+            const currentQ = quizQuestions[currentQuestionIndex];
+            const isCorrect = selectedChoice === currentQ.correct;
+            
+            // Disable all buttons to prevent multiple clicks until next question loads
+            const allButtons = els.choices.querySelectorAll('button');
+            allButtons.forEach(btn => btn.disabled = true);
+
+            // Visual feedback for correct/incorrect answer
+            if (isCorrect) {
+                buttonElement.classList.add('correct');
+                score++;
+            } else {
+                buttonElement.classList.add('incorrect');
+                // Highlight the correct answer for the user to see
+                allButtons.forEach(btn => {
+                    if (btn.innerText === currentQ.correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+
+            // Wait 2.0 seconds, then go to next question or end
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.length) {
+                    loadQuestion();
+                } else {
+                    endQuiz();
+                }
+            }, 2000);
+        }
+
+        function endQuiz() {
+            els.score.innerText = score;
+            
+            const percentage = score / quizQuestions.length;
+            // This feedback system gives players a sense of achievement and encourages them to improve. 
+            // It uses simple thresholds to determine the message that will be displayed based on the percentage of correct answers. 
+            if (percentage === 1) els.feedback.innerText = "Perfect score! You are an animal expert! 🏆";
+            else if (percentage >= 0.7) els.feedback.innerText = "Great job! You really know your animals! 🌟";
+            else if (percentage >= 0.5) els.feedback.innerText = "Not bad! But there's room for improvement. 👍";
+            else els.feedback.innerText = "Keep practicing! You'll get them next time. 📚";
+
+            // Show the result screen
+            showScreen('result');
+        }
+
+        // Initialize the app on load   
+        window.onload = initApp;
+    </script>
+</body>
+</html>
