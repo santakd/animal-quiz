@@ -33,14 +33,16 @@ Because this app doesn't require a server, installation takes less than a minute
 2. **Create your image directory:** Inside the project folder, ensure there is a folder named `img`.
 3. **Add your images:** Place your animal GIF files inside the `img` folder. 
    * *Important:* Files must be named in the format: `<Animal Name> 512.gif` (e.g., `Lion 512.gif`, `Red Panda 512.gif`).
-4. **Play:** Double-click `index.html` to open it in Chrome, Safari, Firefox, or Edge.
+4. **Edit:** `index_max.html` and then minify it to `index_min.html`
+5. **Play:** Double-click `index_min.html` to open it in Chrome, Safari, Firefox, or Edge.
 
 
 ---
 
 ### 🛠️ Customization & Configuration
 
-You can easily modify the game by opening `index.html` in any text editor and tweaking the **Configuration** section near the top of the `<script>` block.
+You can easily modify the game by opening `index_max.html` in any text editor and tweaking the **Configuration** section near the top of the `<script>` block.
+Remember to minify `index_max.html` to `index_min.html`
 
 #### 1. Changing the Number of Questions
 Want a shorter or longer game? Change this single constant. The UI, progress trackers, and final score calculations will automatically update!
