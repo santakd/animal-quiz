@@ -114,7 +114,7 @@ responsive design for mobile compatibility, and event-driven programming to hand
 ├── array_gen.py      # Python utility to generate the javascript encrypted array based on img folder contents, not required at runtime
 ├── array_enc.txt     # Output of the array_gen.py which has the javascript encrypted array and can be copied to index_max.html, not required at runtime
 ├── array_txt.txt     # Output of the array_gen.py which has the javascript unencrypted array for debugging if required, not required at runtime
-├── /img/             # Source directory for "<Animal> 512.gif" files (User populated, not required at runtime for the web version)
+├── /img/             # Source directory for "<Animal> 512.gif" files (User populated, required at runtime for the web version)
 └── /logs/            # Stores timestamped .log files produced by the python utilities
 ```
 
@@ -154,7 +154,7 @@ The application strictly enforces the following structure. The scripts will auto
 ├── setup_db.py       # DB initialization & asset ingestion script
 ├── animal_quiz.py    # Main Pygame application
 ├── /img/             # Source directory for "<Animal> 512.gif" files (User populated, not required after setup for the python version)
-├── /db/              # Stores animal_quiz.sqlite
+├── /db/              # Stores animal_quiz.sqlite which is created after running setup_db.py
 └── /logs/            # Stores timestamped .log files
 ```
 
