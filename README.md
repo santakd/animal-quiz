@@ -1,6 +1,8 @@
 ### 🐾 Animal Quiz Show
 
-A lightweight, fully responsive, zero-dependency trivia game built with pure HTML5, CSS3, and Vanilla JavaScript. 
+This has two versions of the animal quiz.
+- A lightweight, fully responsive, zero-dependency trivia game built with pure HTML5, CSS3, and Vanilla JavaScript.
+- A Python, PyGame and SQLite version of the quiz
 
 **No servers. No build steps. Just open and play!** 🎉
 
@@ -15,7 +17,8 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 
 ### ✨ Features
 
-* 🚫 **100% Serverless:** Runs locally using the `file://` protocol. No Node.js, Python, or Apache servers required!
+* 🚫 **100% Serverless:** Runs locally using the `file://` protocol. No Node.js, or Apache servers required!
+* 🐍 **Python Version:** Runs after setting up the SQLite DB and then running the quiz program.
 * 📱 **Fully Responsive:** Beautiful, modern UI powered by CSS Grid and Flexbox. Looks great on desktop monitors and mobile phones alike.
 * 🔀 **Smart Randomization:** Utilizes the **Fisher-Yates Shuffle algorithm** to ensure questions and multiple-choice answers are completely randomized every time you play.
 * ⚙️ **Dynamic Scaling:** Want 10 questions? 20? 50? Just change one variable (`QUESTIONS_PER_GAME`). The game's UI and math will automatically adapt.
@@ -27,7 +30,7 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 
 ### 🚀 How to Run
 
-Because this app doesn't require a server, installation takes less than a minute.
+##### For the web version. because this app doesn't require a server, installation takes less than a minute.
 
 1. **Download or Clone** this repository to your local machine.
 2. **Create your image directory:** Inside the project folder, ensure there is a folder named `img`.
@@ -36,6 +39,11 @@ Because this app doesn't require a server, installation takes less than a minute
 4. **Edit:** `index_max.html` and then minify it to `index_min.html`
 5. **Play:** Double-click `index_min.html` to open it in Chrome, Safari, Firefox, or Edge.
 
+##### For the python version, it needs Python 3.x, PyGame, Pillow and SQLite
+1. **Install the pre-requisites:** Pip install PyGame Pillow
+2. **Database:** SQLite3 is pre-installed on Mac
+3. **To setup the DB:** Run Python3 setup_db.py
+4. **To play the quiz:** Run Python3 animal_quiz.py
 
 ---
 
@@ -77,10 +85,14 @@ const FILE_SUFFIX = ".jpg";
 
 ### 🧠 Under the Hood
 
+For Web Version
 * **HTML5:** Semantic structure for accessibility.
 * **CSS3:** Uses native CSS variables (`:root`) for easy theming. You can change the primary colors globally in seconds.
 * **Vanilla JavaScript (ES6+):** Utilizes array mapping, filtering, arrow functions, and DOM manipulation without the bloat of external libraries like React or jQuery.
 
+For Python Version
+* **Python 3**
+* **Dependencies:** PyGame, Pillow and SQLite 
 
 ---
 
