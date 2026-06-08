@@ -4,7 +4,7 @@ This has two versions of the animal quiz.
 - A lightweight, fully responsive, zero-dependency trivia game built with pure HTML5, CSS3, and Vanilla JavaScript.
 - A Python, PyGame and SQLite version of the quiz
 
-**No servers. No build steps. Just open and play!** 🎉
+**No servers required. No build steps. Just open and play!** 🎉
 
 Designed with simplicity in mind, this project allows anyone to quickly set up an educational and interactive quiz. 
 
