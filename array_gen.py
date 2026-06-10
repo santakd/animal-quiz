@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-array_gen2.py v1.0.8
+array_gen.py v1.0.8
 Animal Quiz - Array Generator Utility 
 -------------------------------------
 Scans a target directory for image files, strips a specified suffix and extension,

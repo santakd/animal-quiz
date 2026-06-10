@@ -42,8 +42,8 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 ##### For the python version, it needs Python 3.x, PyGame, Pillow and SQLite
 1. **Install the pre-requisites:** Pip install PyGame Pillow
 2. **Database:** SQLite3 is pre-installed on Mac
-3. **To setup the DB:** Run Python3 setup_db.py
-4. **To play the quiz:** Run Python3 animal_quiz.py
+3. **To setup the DB:** Run `Python3 setup_db.py`
+4. **To play the quiz:** Run `Python3 animal_quiz.py`
 
 ---
 

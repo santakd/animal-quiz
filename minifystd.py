@@ -3,7 +3,7 @@
 minifystd.py: Production-Grade HTML, CSS, and JS Minifier.
 Zero external dependencies. Auto-detects file extensions and minifies safely.
 Author: santakd (santakd@gmail.com)
-Version: 1.0.1
+Version: 1.0.8
 
 How to Use & Validate It
     Run Minification:
