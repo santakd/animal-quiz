@@ -3,8 +3,9 @@
 animal_quiz.py - Animal Quiz Show
 Pygame application utilizing SQLite BLOBs and Pillow for animated GIF rendering.
 Version: 1.0.8
-"""
 
+"""
+# imports
 import os
 import sys
 import sqlite3
