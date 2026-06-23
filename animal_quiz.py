@@ -2,22 +2,22 @@
 """
 animal_quiz.py - Animal Quiz Show
 Pygame application utilizing SQLite BLOBs and Pillow for animated GIF rendering.
-Version: 1.0.8
-
 """
-# imports
-import os
-import sys
-import sqlite3
-import logging
-import hashlib
-import random
-import io
-from pathlib import Path
-from datetime import datetime
 
-import pygame
-from PIL import Image, ImageSequence
+# Standard library imports
+from datetime import datetime   # Manipulates dates and times
+import hashlib                  # Computes secure hashes and message digests
+import io                       # Handles stream-based input and output operations
+import logging                  # Configures and logs application events and errors
+import os                       # Accesses operating system-dependent functionality
+from pathlib import Path        # Works with filesystem paths using an object-oriented approach
+import random                   # Generates pseudo-random numbers
+import sqlite3                  # Interacts with SQLite databases using SQL
+import sys                      # Accesses system-specific parameters and command-line arguments
+
+# Third-party imports
+from PIL import Image, ImageSequence    # Processes and manipulates images using Pillow
+import pygame                           # Builds multimedia applications and 2D games
 
 # ==========================================
 # CONFIGURATION
@@ -49,6 +49,8 @@ COLOR_GRAY = (209, 213, 219)
 # ==========================================
 # LOGGING SETUP
 # ==========================================
+
+# Set up logging
 def setup_logging():
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -71,6 +73,8 @@ logger = setup_logging()
 # ==========================================
 class AnimatedGIF:
     """Handles extracting frames from a GIF BLOB via Pillow and animating in Pygame."""
+
+    # Initialize the AnimatedGIF with a BLOB of a GIF and a center position.
     def __init__(self, blob_data, center_pos):
         self.frames = []
         self.durations = []
@@ -82,6 +86,7 @@ class AnimatedGIF:
         
         self._load_from_blob(blob_data)
 
+    # Load the GIF frames from the provided BLOB data.
     def _load_from_blob(self, blob_data):
         try:
             byte_stream = io.BytesIO(blob_data)
@@ -90,6 +95,7 @@ class AnimatedGIF:
             for frame in ImageSequence.Iterator(pil_image):
                 frame_rgba = frame.convert("RGBA")
                 mode = frame_rgba.mode
+                
                 size = frame_rgba.size
                 data = frame_rgba.tobytes()
                 
@@ -104,6 +110,7 @@ class AnimatedGIF:
         except Exception as e:
             logger.error(f"Failed to decode animated GIF BLOB: {e}")
 
+    # Update the current frame of the animation.
     def update(self):
         if not self.valid or len(self.frames) <= 1:
             return
@@ -112,12 +119,15 @@ class AnimatedGIF:
             self.current_frame = (self.current_frame + 1) % len(self.frames)
             self.last_update = now
 
+    # Draw the current frame of the animation.
     def draw(self, surface):
         if self.valid:
             surface.blit(self.frames[self.current_frame], self.rect)
 
 class Button:
     """UI Clickable Button."""
+
+    # Initialize the Button with a position, size, text, and font.
     def __init__(self, x, y, w, h, text, font):
         self.rect = pygame.Rect(x, y, w, h)
         self.text = text
@@ -125,7 +135,8 @@ class Button:
         self.color = COLOR_PRIMARY
         self.is_hovered = False
         self.disabled = False
-        
+
+    # Draw the button on the given surface.
     def draw(self, surface):
         current_color = COLOR_GRAY if self.disabled else (COLOR_PRIMARY_HOVER if self.is_hovered else self.color)
         pygame.draw.rect(surface, current_color, self.rect, border_radius=8)
@@ -134,10 +145,12 @@ class Button:
         text_rect = text_surf.get_rect(center=self.rect.center)
         surface.blit(text_surf, text_rect)
 
+    # Check if the mouse is hovering over the button.
     def check_hover(self, pos):
         if not self.disabled:
             self.is_hovered = self.rect.collidepoint(pos)
 
+    # Handle the event for the button.
     def handle_event(self, event):
         if self.disabled:
             return False
@@ -148,6 +161,8 @@ class Button:
 
 class TextInput:
     """Simple Pygame Text Input Box."""
+
+    # Initialize the TextInput with a position, size, font, and optional password field.
     def __init__(self, x, y, w, h, font, is_password=False):
         self.rect = pygame.Rect(x, y, w, h)
         self.color = COLOR_GRAY
@@ -156,6 +171,7 @@ class TextInput:
         self.active = False
         self.is_password = is_password
 
+    # Handle the event for the text input.
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.active = self.rect.collidepoint(event.pos)
@@ -170,6 +186,7 @@ class TextInput:
                 if len(self.text) < 20:
                     self.text += event.unicode
 
+    # Draw the text input on the given surface.
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, self.rect, 2, border_radius=4)
         display_text = '*' * len(self.text) if self.is_password else self.text
@@ -180,6 +197,8 @@ class TextInput:
 # MAIN APPLICATION MANAGER
 # ==========================================
 class AnimalQuizApp:
+
+    # Initialize the AnimalQuizApp.
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -215,6 +234,7 @@ class AnimalQuizApp:
         self.delay_start_time = 0
         self.feedback_message = ""
 
+    # Connect to the SQLite database.
     def _connect_db(self):
         if not DB_FILE.exists():
             logger.critical("Database not found. Please run setup_db.py first.")
@@ -226,9 +246,11 @@ class AnimalQuizApp:
             logger.critical(f"Database connection failed: {e}")
             sys.exit(1)
 
+    # Hash a password using SHA-256.
     def _hash_password(self, pwd: str) -> str:
         return hashlib.sha256(pwd.encode('utf-8')).hexdigest()
 
+    # Handle the login process.
     def handle_login(self):
         user = self.input_user.text.strip()
         pwd = self.input_pass.text.strip()
@@ -250,8 +272,10 @@ class AnimalQuizApp:
             logger.error(f"Login database error: {e}")
             self.login_error = "Database Error"
 
+    # Load game data from the database.
     def load_game_data(self):
         """Loads animal names and BLOBs into memory for the quiz."""
+
         try:
             cursor = self.conn.cursor()
             cursor.execute("SELECT animal_name, image_blob FROM animals")
@@ -259,7 +283,8 @@ class AnimalQuizApp:
             logger.info(f"Loaded {len(self.all_animals)} animals from database.")
         except Exception as e:
             logger.error(f"Failed to fetch animals: {e}")
-            
+
+    # Start the quiz.
     def start_quiz(self):
         if len(self.all_animals) < 4:
             logger.error("Not enough animals in DB to start the quiz. Need at least 4.")
@@ -304,6 +329,7 @@ class AnimalQuizApp:
         self.load_question()
         self.state = "QUIZ"
 
+    # Load the current question into the game.
     def load_question(self):
         q = self.quiz_questions[self.current_q_index]
         # Shifted GIF center down slightly for taller screen
@@ -328,6 +354,7 @@ class AnimalQuizApp:
         for i, choice in enumerate(q['choices']):
             self.buttons.append(Button(positions[i][0], positions[i][1], btn_width, btn_height, choice, self.font))
 
+    # Evaluate the user's answer to the current question.
     def evaluate_answer(self, selected_button):
         q = self.quiz_questions[self.current_q_index]
         is_correct = (selected_button.text == q['correct'])
@@ -348,6 +375,7 @@ class AnimalQuizApp:
         self.delay_start_time = pygame.time.get_ticks()
         self.state = "DELAY"
 
+    # Calculate the feedback message based on the quiz score.
     def _calculate_feedback_message(self):
         """Calculates the feedback message based on the quiz score percentage. Emojis removed for Pygame font safety."""
         total_questions = len(self.quiz_questions)
@@ -355,6 +383,7 @@ class AnimalQuizApp:
             self.feedback_message = "No questions were played."
             return
 
+        # Calculate the percentage of correct answers.
         percentage = self.score / total_questions
         if percentage == 1:
             self.feedback_message = "Perfect score! You are an animal expert!"
@@ -367,6 +396,7 @@ class AnimalQuizApp:
             
         logger.info(f"Quiz ended. Score: {self.score}/{total_questions}. Feedback: {self.feedback_message}")
 
+    # Run the main event loop.
     def run(self):
         """Main non-blocking event loop."""
         while self.running:
@@ -403,6 +433,7 @@ class AnimalQuizApp:
             
         self.cleanup()
 
+    # Update the game logic.
     def update_logic(self):
         if self.state in ["QUIZ", "DELAY"]:
             if self.current_gif:
@@ -418,6 +449,7 @@ class AnimalQuizApp:
                     self._calculate_feedback_message() 
                     self.state = "RESULT"
 
+    # Draw the current state of the game.
     def draw_screen(self):
         self.screen.fill(COLOR_BG)
         
@@ -468,13 +500,16 @@ class AnimalQuizApp:
 
         pygame.display.flip()
 
+    # Clean up the application and release resources.
     def cleanup(self):
         logger.info("Closing application and releasing resources.")
+        
         if self.conn:
             self.conn.close()
         pygame.quit()
         sys.exit()
 
+# Main entry point for the application.
 if __name__ == "__main__":
     app = AnimalQuizApp()
     app.run()
