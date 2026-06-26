@@ -98,7 +98,7 @@ For Python Version
 
 ### 💻 Developer Notes
 
-##### For the web version
+#### For the web version
 The HTML file implements a simple, interactive animal quiz game using vanilla JavaScript, CSS, and HTML. 
 It displays a series of animal images (stored in an img/ folder) and asks users to select the correct name from four multiple-choice options. 
 The game adapts dynamically to the number of available animals and questions configured, providing feedback and a final score. 
@@ -142,7 +142,7 @@ mismatches could cause broken images, as handled by the onerror attribute. For i
 using a framework like React for state management in more complex apps. Overall, this code demonstrates fundamental web concepts like DOM manipulation, 
 asynchronous delays with setTimeout, and conditional rendering via CSS classes, making it a great starting point for beginners learning interactive web development.
 
-##### For the python version
+#### For the python version
 
 This project is a desktop port of a web-based quiz game. It consists of a database ingestion utility (setup_db.py) and a Pygame-based main client (animal_quiz.py). The system is entirely offline, using SQLite for data/asset storage and Pillow (PIL) to overcome Pygame's native limitations with animated GIFs.
 Directory Architecture
