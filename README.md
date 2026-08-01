@@ -13,7 +13,7 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 ![animal-quiz.gif](https://github.com/santakd/animal-quiz/blob/main/animal-quiz.gif)
 
  
----
+<br>
 
 ### ✨ Features
 
@@ -26,7 +26,7 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 * 🎨 **Instant Visual Feedback:** Smooth CSS animations and color-coded feedback (Green for correct, Red for incorrect with the correct answer highlighted).
 
 
----
+<br>
 
 ### 🚀 How to Run
 
@@ -45,7 +45,7 @@ It dynamically selects random animals, generates multiple-choice questions, and 
 3. **To setup the DB:** Run `Python3 setup_db.py`
 4. **To play the quiz:** Run `Python3 animal_quiz.py`
 
----
+<br>
 
 ### 🛠️ Customization & Configuration
 
@@ -81,7 +81,7 @@ Prefer `.jpg` or `.png` over `.gif`? Or maybe you don't want the " 512" in the f
 const FILE_SUFFIX = ".jpg"; 
 ```
 
----
+<br>
 
 ### 🧠 Under the Hood
 
@@ -94,11 +94,10 @@ For Python Version
 * **Python 3**
 * **Dependencies:** PyGame, Pillow and SQLite 
 
----
+<br>
 
-### 💻 Developer Notes
+### 💻 Developer notes for the web version
 
-#### For the web version
 The HTML file implements a simple, interactive animal quiz game using vanilla JavaScript, CSS, and HTML. 
 It displays a series of animal images (stored in an img/ folder) and asks users to select the correct name from four multiple-choice options. 
 The game adapts dynamically to the number of available animals and questions configured, providing feedback and a final score. 
@@ -142,7 +141,9 @@ mismatches could cause broken images, as handled by the onerror attribute. For i
 using a framework like React for state management in more complex apps. Overall, this code demonstrates fundamental web concepts like DOM manipulation, 
 asynchronous delays with setTimeout, and conditional rendering via CSS classes, making it a great starting point for beginners learning interactive web development.
 
-#### For the python version
+<br>
+
+### 💻 Developer notes for the python version
 
 This project is a desktop port of a web-based quiz game. It consists of a database ingestion utility (setup_db.py) and a Pygame-based main client (animal_quiz.py). The system is entirely offline, using SQLite for data/asset storage and Pillow (PIL) to overcome Pygame's native limitations with animated GIFs.
 Directory Architecture
@@ -218,7 +219,7 @@ Both scripts utilize Python's logging module.
     If a Pygame crash occurs, or if an image fails to parse from the BLOB, check the latest log file for the stack trace. The AnimatedGIF class is wrapped in a try/except block to prevent corrupted BLOBs from crashing the main game loop.
 ```
     
----
+<br>
 
 ### 🤝 Contributing
 
@@ -232,14 +233,14 @@ Feel free to check [issues page](https://github.com/your-username/your-repo-name
 5. Open a Pull Request
 
 
----
+<br>
 
 ### 📝 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
----
+<br>
 
 *If you like this project, please consider giving it a ⭐ on GitHub!*
  
